@@ -1,6 +1,11 @@
 import React, {useState} from 'react';
-
 import './App.css';
+
+import Filter from './components/Filter';
+import PersonForm from './components/PersonForm';
+
+
+type HandleFunc = (e: React.ChangeEvent<HTMLInputElement>) => void;
 
 function App() {
   const [ persons, setPersons ] = useState([
@@ -15,11 +20,11 @@ function App() {
   const [formData, setFormData] = useState({number: "", name: ""})
   const {name, number} = formData;
 
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput: HandleFunc = (e) => {
     setFormData({...formData, [e.currentTarget.name]: e.currentTarget.value});
   }
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch: HandleFunc = (e) => {
     setSearchTerm(e.currentTarget.value);
   }
   
@@ -40,19 +45,9 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>filter shown with <input name="search" value={searchTerm} onChange={handleSearch} /></div>
+      <Filter handleSearch={handleSearch} searchTerm={searchTerm} />
       <h2>Add a new</h2>
-      <form onSubmit={addName}>
-        <div>
-          name: <input name="name" value={name} onChange={handleChangeInput} />
-        </div>
-        <div>
-          number: <input name="number" value={number} onChange={handleChangeInput} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm  addName={addName} name={name} number={number} handleChangeInput={handleChangeInput} />
       <h2>Numbers</h2>
       {persons
       .filter(person => person.name.toLowerCase().includes(searchTerm.toLowerCase()))
