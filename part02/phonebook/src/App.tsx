@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
+import axios, { AxiosResponse } from 'axios';
 import './App.css';
 
 import Filter from './components/Filter';
@@ -6,14 +7,25 @@ import PersonForm from './components/PersonForm';
 
 
 type HandleFunc = (e: React.ChangeEvent<HTMLInputElement>) => void;
+interface UserData {
+  id: number;
+  name: string;
+  number: string;
+}
 
 function App() {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]) 
+  const [ persons, setPersons ] = useState<UserData[]>([]) 
+
+  useEffect(() => {
+    fetchData();
+  }, [])
+
+  const fetchData = async () => {
+    const resp = await axios.get("http://localhost:3001/persons");
+    const { data }: AxiosResponse<[UserData]> = resp;
+    setPersons([...data])
+  }
+  
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -36,10 +48,11 @@ function App() {
       alert(`${name} is already added to phonebook`);
       return;
     }
-    const newPersonToAdd = { name, number};
+    const newPersonToAdd: UserData = { name, number, id: Math.random()};
     setPersons([...persons, newPersonToAdd])
     // setformData;
   }
+
 
 
   return (
