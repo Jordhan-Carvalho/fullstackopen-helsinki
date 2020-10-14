@@ -1,13 +1,20 @@
 import React from 'react'
 
+import CountryName from './CountryName';
+import { CountryData } from '../interfaces';
+
 type CountryListProps = {
-  countries: string[];
+  countries: CountryData[];
 }
 
 export default function CountryList({countries}: CountryListProps) {
+
+
   return (
   <>
-    {countries.map(country => <div key={country}>{country}</div>)}
+    {countries.map(country => 
+    <CountryName country={country} key={country.name}/>
+    )}
   </>
   )
 }

@@ -16,9 +16,10 @@ function App() {
     fetchCountries();
   }, [])
 
-  useEffect(() => {
-    filterCountries(searchTerm, countries);
-  }, [searchTerm, countries] )
+  // causes 1 extra rerender
+  // useEffect(() => {
+  //   filterCountries(searchTerm, countries);
+  // }, [searchTerm, countries] )
 
 
   const filterCountries = (searchTerm: string, countries: CountryData[]) => {
@@ -43,7 +44,7 @@ function App() {
     if (filteredCountries.length > 10) {
        return "Too many matches, specify another filter";
     } else if  (filteredCountries.length <= 10 && filteredCountries.length > 1) {
-       return <CountryList countries={filteredCountries.map(country => country.name)} />;
+       return <CountryList countries={filteredCountries} />;
     } else if ( filteredCountries.length === 1) {
        return <SingleCountry country={filteredCountries[0]}  />;
     } else {
@@ -53,6 +54,7 @@ function App() {
 
   const handleSearchTerm = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.currentTarget.value);
+    filterCountries(searchTerm, countries);
   }
 
   console.log("rerender")
