@@ -57,7 +57,6 @@ function App() {
     filterCountries(searchTerm, countries);
   }
 
-  console.log("rerender")
   
 
   return (
