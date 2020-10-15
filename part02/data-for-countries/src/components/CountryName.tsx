@@ -1,20 +1,20 @@
-import React, { useState } from 'react'
+import React from "react";
 
-import SingleCountry from './SingleCountry';
-import { CountryData } from '../interfaces';
+import SingleCountry from "./SingleCountry";
+import { CountryData } from "../interfaces";
+import Togglable from "./common/togglable";
 
 type CountryNameProps = {
   country: CountryData;
-}
+};
 
-export default function CountryName({country}: CountryNameProps) {
-  const [ show, setShow ] = useState(false);
-
-
+export default function CountryName({ country }: CountryNameProps) {
   return (
     <>
-    <div key={country.name}>{country.name}<button onClick={() => setShow(!show)} >Show</button></div>
-    {show && <SingleCountry country={country} />}
+      <div key={country.name}>{country.name}</div>
+      <Togglable buttonLabel={"Show"}>
+        <SingleCountry country={country} />
+      </Togglable>
     </>
-  )
+  );
 }
